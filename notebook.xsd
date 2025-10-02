@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!-- Корневой элемент notebook -->
+  <xs:element name="notebook">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Элемент offices, содержащий один или несколько office -->
+        <xs:element name="offices">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="office" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="code" type="xs:string" unique="true" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <!-- Элемент person, содержащий name, address и phones -->
+        <xs:element name="person">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="name">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="first" type="xs:string" />
+                    <xs:element name="surname" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="address">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="city" type="xs:string" />
+                    <xs:element name="street" type="xs:string" />
+                    <xs:element name="index" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+
+              <xs:element name="phones">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="phone" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:extension base="xs:string">
+                            <xs:attribute name="type" type="xs:string" 
+                                          use="optional">
+                              <xs:restriction base="xs:string">
+                                <xs:enumeration value="work" />
+                                <xs:enumeration value="home" />
+                              </xs:restriction>
+                            </xs:attribute>
+                          </xs:extension>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+          <!-- Атрибут id, уникальный для каждого person -->
+          <xs:attribute name="id" type="xs:string" use="required" />
+          <!-- Атрибут office, ссылающийся на элемент office -->
+          <xs:attribute name="office" type="xs:string" use="required" />
+        </xs:element>
+
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Ограничение для индекса -->
+  <xs:complexType name="indexType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="\d{6}" />
+        </xs:restriction>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- Ограничение для телефона -->
+  <xs:complexType name="phoneType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="\d{3}-\d{2}-\d{2}" />
+        </xs:restriction>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+</xs:schema>
